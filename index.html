@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <a class="skip-link" href="#home">본문 바로가기</a>
     <header class="site-header">
       <div class="container">
         <a class="logo" href="#home">My-Portfolio</a>
-        <nav class="site-nav" aria-label="주요 섹션">
+        <button class="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-nav">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav id="site-nav" class="site-nav" aria-label="주요 섹션">
           <a class="nav-link" href="#about">About</a>
           <a class="nav-link" href="#skills">Skills</a>
           <a class="nav-link" href="#projects">Projects</a>
@@ -189,7 +195,9 @@
             </article>
             <article class="card">
               <div class="thumb-wrap">
-                <img class="project-thumb" src="images/projects/levis-16x9.jpg" alt="LEVI'S 프로젝트 썸네일" width="1600" height="900" loading="lazy" decoding="async" />
+                <div class="project-thumb placeholder" role="img" aria-label="LEVI'S 프로젝트 썸네일 (준비 중)">
+                  <span>LEVI'S</span>
+                </div>
               </div>
               <div class="project-content">
                 <h3>LEVI'S</h3>
@@ -286,6 +294,25 @@
       );
 
       sections.forEach((section) => observer.observe(section));
+
+      const navToggle = document.querySelector(".nav-toggle");
+      const siteNav = document.querySelector(".site-nav");
+      navToggle?.addEventListener("click", () => {
+        const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", !isOpen);
+        navToggle.setAttribute("aria-label", isOpen ? "메뉴 열기" : "메뉴 닫기");
+        siteNav.classList.toggle("is-open", !isOpen);
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth <= 720) {
+            navToggle?.setAttribute("aria-expanded", "false");
+            navToggle?.setAttribute("aria-label", "메뉴 열기");
+            siteNav?.classList.remove("is-open");
+          }
+        });
+      });
 
       const copyButton = document.querySelector(".copy-btn");
       const copyStatus = document.querySelector(".copy-status");
